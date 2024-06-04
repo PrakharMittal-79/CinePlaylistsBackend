@@ -8,6 +8,7 @@ const jwt=require('jsonwebtoken');
 router.get('/user',(req,res)=>{
     if (req.cookies.jwt) {
         const ress = jwt.verify(req.cookies.jwt, "itisthemostsecuresecretkey");
+        console.log("hii");
         res.status(200).send(ress);
     } else {
         res.status(401).send("No user found");
@@ -42,6 +43,9 @@ router.post('/login',async (req,res)=>{
     const token=genrateToken(isUser);
     res.cookie("jwt", token, {
         maxAge: 10 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None'
     });
     res.status(200).send({
         token:token,
@@ -52,7 +56,6 @@ router.post('/login',async (req,res)=>{
 
 router.get('/logout',(req,res)=>{
     res.clearCookie("jwt");
-    req.user=null;
     res.status(200).send("Logged out successfully");
 })
 
