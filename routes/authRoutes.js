@@ -18,7 +18,7 @@ router.post('/register',async (req,res)=>{
     const userData=req.body;
     const isUser=await User.findOne({email:userData.email});
     if(isUser!=null){
-        res.status(400).send("User already exist");
+       return res.status(400).send("User already exist");
     }
     const hashpassword=await bcrypt.hash(userData.password,11);
     const newUser=await User.create({
@@ -42,7 +42,6 @@ router.post('/login',async (req,res)=>{
     const token=genrateToken(isUser);
     res.cookie("jwt", token, {
         maxAge: 10 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
     });
     res.status(200).send({
         token:token,

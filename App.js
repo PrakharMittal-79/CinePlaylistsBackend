@@ -8,7 +8,7 @@ const cookieParser=require('cookie-parser');
 const cors=require('cors');
 const BASE_URL=process.env.BASE_URL
 
-const db_URL=process.env.db_URL 
+const db_URL=process.env.db_URL
 
 mongoose.connect(db_URL)
 .then(()=>{
@@ -20,7 +20,8 @@ mongoose.connect(db_URL)
 })
 
 app.use(cookieParser());
-app.use(cors({origin:BASE_URL,credentials: true}));
+// app.use(cors({origin:BASE_URL,credentials: true}));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
@@ -32,6 +33,6 @@ app.use(authRoutes);
 app.use(listRoutes);
 
 const PORT=process.env.PORT || 8080;
-app.listen(8080,()=>{
+app.listen(PORT,()=>{
     console.log('server is running on port 8080');
 })
